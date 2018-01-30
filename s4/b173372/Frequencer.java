@@ -22,6 +22,8 @@ public class Frequencer implements FrequencerInterface{
                 System.out.write('\n'); }
         }
     }
+    
+    
     private int suffixCompare(int i, int j) {
         // comparing two suffixes by dictionary order.
         // i and j denoetes suffix_i, and suffix_j
@@ -55,8 +57,77 @@ public class Frequencer implements FrequencerInterface{
     }
     
     
+    //クイックソート
+     //*********************************************************************************************
+    /*
+     * 軸要素の選択
+     * 順に見て、最初に見つかった異なる2つの要素のうち、
+     * 大きいほうの番号を返します。
+     * 全部同じ要素の場合は -1 を返します。
+     */
+    int pivot(int i,int j){
+        int k=i+1;
+        /*
+        //while(k<=j && suffixArray[i]==suffixArray[k]) k++;
+        while(k<=j && (suffixCompare(i,k)==0) )k++;
+        
+        if(k>j) return -1;
+        
+        //if(suffixArray[i]>=suffixArray[k]) return i;
+        if((suffixCompare(i,k)==0)||(suffixCompare(i,k)==1)) return i;
+        */
+        if(k>j) return -1;
+        return k;
+    }
     
+    /*
+     * パーティション分割
+     * a[i]～a[j]の間で、x を軸として分割します。
+     * x より小さい要素は前に、大きい要素はうしろに来ます。
+     * 大きい要素の開始番号を返します。
+     */
+    int partition(int i,int j,int x){
+        int l=i,r=j;
+        
+        // 検索が交差するまで繰り返します
+        while(l<=r){
+            // 軸要素以上のデータを探します
+            //while(l<=j && suffixArray[l]<x)  l++;
+            while(l<=j && (suffixCompare(x,l)==1)) l++;
+            // 軸要素未満のデータを探します
+            //while(r>=i && suffixArray[r]>=x) r--;
+            while(r>=i && (suffixCompare(r,x)!=-1)) r--;
+            
+            if(l>r) break;
+            int t=suffixArray[l];
+            suffixArray[l]=suffixArray[r];
+            suffixArray[r]=t;
+            l++; r--;
+        }
+        return l;
+    }
     
+    /*
+     * クイックソート（再帰用）
+     * 配列aの、a[i]からa[j]を並べ替えます。
+     */
+    public void quickSort(int i,int j){
+        if(i==j) return;
+        int p=pivot(i,j);
+        if(p!=-1){
+            int k=partition(i,j,p);
+            quickSort(i,k-1);
+            quickSort(k,j);
+        }
+    }
+    
+    /*
+     * ソート
+     */
+    //public void sort(int[] a){
+        //quickSort(a,0,a.length-1);
+    //}
+    //*********************************************************************************************
     
     public void setSpace(byte []space) {
         mySpace = space;
@@ -67,6 +138,7 @@ public class Frequencer implements FrequencerInterface{
         for(int i = 0; i< space.length; i++) {
             suffixArray[i] = i;
         }
+        //ソート
         int value;
         for(int i=0;i<space.length-1;i++){
             for(int j=i+1;j<space.length;j++){
@@ -77,6 +149,9 @@ public class Frequencer implements FrequencerInterface{
                 }
             }
         }
+        
+        //quickSort(0,suffixArray.length-1);
+        //quickSort(0,suffixArray.length-1);
         
         
         // Sorting is not implmented yet.
