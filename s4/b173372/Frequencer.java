@@ -17,6 +17,7 @@ public class Frequencer implements FrequencerInterface{
         if(spaceReady) {
             for(int i=0; i< mySpace.length; i++) {
                 int s = suffixArray[i];
+                 System.out.print("["+i+"]");
                 for(int j=s;j<mySpace.length;j++) {
                     System.out.write(mySpace[j]); }
                 System.out.write('\n'); }
@@ -36,7 +37,6 @@ public class Frequencer implements FrequencerInterface{
         // "i"< "o"  : compare by code
         // "Hi"< "Ho"  ; if head is same, compare the next element
         // "Ho"< "Ho "  ; if the prefix is identical, longer string is big
-        
         int si = suffixArray[i];
         int sj = suffixArray[j];
         int s = 0;
@@ -55,10 +55,7 @@ public class Frequencer implements FrequencerInterface{
         
         return 0;
     }
-    
-    
-    //クイックソート
-     //*********************************************************************************************
+    //***************************************
     /*
      * 軸要素の選択
      * 順に見て、最初に見つかった異なる2つの要素のうち、
@@ -67,41 +64,45 @@ public class Frequencer implements FrequencerInterface{
      */
     int pivot(int i,int j){
         int k=i+1;
-        /*
         //while(k<=j && suffixArray[i]==suffixArray[k]) k++;
-        while(k<=j && (suffixCompare(i,k)==0) )k++;
-        
+        while(k<=j && i==k ) k++;
         if(k>j) return -1;
-        
         //if(suffixArray[i]>=suffixArray[k]) return i;
-        if((suffixCompare(i,k)==0)||(suffixCompare(i,k)==1)) return i;
-        */
-        if(k>j) return -1;
+        if(suffixCompare(i,k)!=-1) return i;
         return k;
+  
     }
     
     /*
      * パーティション分割
-     * a[i]～a[j]の間で、x を軸として分割します。
+     * suffixArray[i]～suffixArray[j]の間で、x を軸として分割します。
      * x より小さい要素は前に、大きい要素はうしろに来ます。
      * 大きい要素の開始番号を返します。
      */
     int partition(int i,int j,int x){
         int l=i,r=j;
-        
         // 検索が交差するまで繰り返します
         while(l<=r){
+            
             // 軸要素以上のデータを探します
-            //while(l<=j && suffixArray[l]<x)  l++;
-            while(l<=j && (suffixCompare(x,l)==1)) l++;
+            //while(l<=j && suffixArray[l]<sufficArray[x])  l++;
+            while(l<=j && (suffixCompare(x,l)== 1) ) l++;
+            
             // 軸要素未満のデータを探します
-            //while(r>=i && suffixArray[r]>=x) r--;
-            while(r>=i && (suffixCompare(r,x)!=-1)) r--;
+            //while(r>=i && suffixArray[r]>=suffixArray[x]) r--;
+            while(r>=i && suffixCompare(x,r)!= 1) r--;
             
             if(l>r) break;
+            
             int t=suffixArray[l];
             suffixArray[l]=suffixArray[r];
             suffixArray[r]=t;
+            
+            if(l==x)
+                x=r;
+            else if(r==x)
+                x=l;
+                
             l++; r--;
         }
         return l;
@@ -109,25 +110,27 @@ public class Frequencer implements FrequencerInterface{
     
     /*
      * クイックソート（再帰用）
-     * 配列aの、a[i]からa[j]を並べ替えます。
+     * 配列aの、suffixArray[i]からsuffixArray[j]を並べ替えます。
      */
     public void quickSort(int i,int j){
+        
         if(i==j) return;
         int p=pivot(i,j);
         if(p!=-1){
             int k=partition(i,j,p);
+            
             quickSort(i,k-1);
             quickSort(k,j);
         }
     }
     
-    /*
-     * ソート
-     */
-    //public void sort(int[] a){
-        //quickSort(a,0,a.length-1);
-    //}
-    //*********************************************************************************************
+    //ソート
+    public void sort(){
+        quickSort(0,suffixArray.length-1);
+    }
+    
+    //*****************************************
+    
     
     public void setSpace(byte []space) {
         mySpace = space;
@@ -139,6 +142,7 @@ public class Frequencer implements FrequencerInterface{
             suffixArray[i] = i;
         }
         //ソート
+        /*
         int value;
         for(int i=0;i<space.length-1;i++){
             for(int j=i+1;j<space.length;j++){
@@ -149,10 +153,9 @@ public class Frequencer implements FrequencerInterface{
                 }
             }
         }
-        
-        //quickSort(0,suffixArray.length-1);
-        //quickSort(0,suffixArray.length-1);
-        
+        */
+        //quicksort
+        sort();
         
         // Sorting is not implmented yet.
         /* Example from "Hi Ho Hi Ho"
@@ -297,9 +300,12 @@ public class Frequencer implements FrequencerInterface{
         Frequencer frequencerObject;
         try {
             frequencerObject = new Frequencer();
-            frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
+//            frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
+//             frequencerObject.setTarget("Ho".getBytes());
             
-             frequencerObject.setTarget("Ho".getBytes());
+            frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
+            frequencerObject.setTarget("Ho".getBytes());
+            
             
              int result = frequencerObject.frequency();
              
