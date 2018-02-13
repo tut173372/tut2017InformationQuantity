@@ -17,7 +17,6 @@ public class Frequencer implements FrequencerInterface{
         if(spaceReady) {
             for(int i=0; i< mySpace.length; i++) {
                 int s = suffixArray[i];
-                 System.out.print("["+i+"]");
                 for(int j=s;j<mySpace.length;j++) {
                     System.out.write(mySpace[j]); }
                 System.out.write('\n'); }
@@ -277,7 +276,7 @@ public class Frequencer implements FrequencerInterface{
         //inspection code
          for(int k=start;k<end;k++)
          { System.out.write(myTarget[k]); }
-        System.out.printf(": first=%d last1=%d\n", first, last1);
+        //System.out.printf(": first=%d last1=%d\n", first, last1);
         
         return last1 - first;
         

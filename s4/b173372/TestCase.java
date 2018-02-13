@@ -175,7 +175,7 @@ public class TestCase {
             double value;
             System.out.println("checking s4.b173372.InformationEstimator");
             myObject = new s4.b173372.InformationEstimator();
-            myObject.setTarget("".getBytes());
+            myObject.setTarget("asa".getBytes());
             value = myObject.estimation();
             if(Double.MAX_VALUE == value) { System.out.println("OK"); } else {System.out.println("WRONG"); }
             
