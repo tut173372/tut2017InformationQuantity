@@ -140,20 +140,7 @@ public class Frequencer implements FrequencerInterface{
         for(int i = 0; i< space.length; i++) {
             suffixArray[i] = i;
         }
-        //ソート
-        /*
-        int value;
-        for(int i=0;i<space.length-1;i++){
-            for(int j=i+1;j<space.length;j++){
-                if(suffixCompare(i,j) > 0){
-                    value = suffixArray[i];
-                    suffixArray[i] = suffixArray[j];
-                    suffixArray[j] = value;
-                }
-            }
-        }
-        */
-        //quicksort
+       
         sort();
         
         // Sorting is not implmented yet.
@@ -170,7 +157,7 @@ public class Frequencer implements FrequencerInterface{
          9:o
          A:o Hi Ho
          */
-        printSuffixArray();
+        //printSuffixArray();
     }
     
     
@@ -276,7 +263,6 @@ public class Frequencer implements FrequencerInterface{
         //inspection code
          for(int k=start;k<end;k++)
          { System.out.write(myTarget[k]); }
-        //System.out.printf(": first=%d last1=%d\n", first, last1);
         
         return last1 - first;
         
@@ -299,8 +285,7 @@ public class Frequencer implements FrequencerInterface{
         Frequencer frequencerObject;
         try {
             frequencerObject = new Frequencer();
-//            frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
-//             frequencerObject.setTarget("Ho".getBytes());
+
             
             frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
             frequencerObject.setTarget("Ho".getBytes());
